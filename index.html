@@ -1,0 +1,492 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="color-scheme" content="light dark" />
+  <meta name="theme-color" content="#f4f6f1" />
+  <link rel="icon" href="data:," />
+  <title>Free Online Tools</title>
+  <style>
+    :root {
+      color-scheme: light dark;
+      --bg: #f4f6f1;
+      --surface: #ffffff;
+      --surface-2: #e9eee6;
+      --text: #142019;
+      --muted: #526158;
+      --line: #ccd5ce;
+      --accent: #086b55;
+      --accent-strong: #054d3d;
+      --accent-soft: #d9eee7;
+      --warm: #d98e04;
+      --warm-soft: #fff0c9;
+      --danger: #a3372e;
+      --shadow: 0 16px 40px rgba(28, 46, 35, .09);
+      --radius-sm: 9px;
+      --radius-md: 16px;
+      --radius-lg: 24px;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #101612;
+        --surface: #18211b;
+        --surface-2: #202c24;
+        --text: #edf4ef;
+        --muted: #aab8af;
+        --line: #34433a;
+        --accent: #54c6a4;
+        --accent-strong: #8ee1c7;
+        --accent-soft: #183d31;
+        --warm: #f2b84b;
+        --warm-soft: #3c3017;
+        --danger: #ff9a90;
+        --shadow: 0 18px 44px rgba(0, 0, 0, .28);
+      }
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background:
+        linear-gradient(90deg, transparent 0 49.5%, color-mix(in srgb, var(--line) 35%, transparent) 49.5% 50.5%, transparent 50.5%) 0 0 / 44px 44px,
+        var(--bg);
+      color: var(--text);
+      font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      line-height: 1.55;
+      -webkit-font-smoothing: antialiased;
+    }
+    button, input, select, textarea { font: inherit; }
+    button { cursor: pointer; }
+    a { color: inherit; }
+    .wrap { width: min(1120px, calc(100% - 36px)); margin: 0 auto; }
+    .hero { padding: 70px 0 42px; max-width: 800px; }
+    .hero-mark { width: 70px; height: 7px; background: var(--warm); margin-bottom: 28px; border-radius: 99px; }
+    h1, h2, h3 { margin: 0; line-height: 1.08; letter-spacing: -.035em; }
+    h1 { font-family: Georgia, "Times New Roman", serif; font-size: clamp(46px, 8vw, 84px); font-weight: 700; max-width: 730px; }
+    .hero p { margin: 22px 0 0; max-width: 590px; font-size: clamp(17px, 2.2vw, 21px); color: var(--muted); }
+    .section-label { display: flex; align-items: center; gap: 12px; margin: 18px 0 22px; color: var(--muted); font-size: 14px; font-weight: 700; }
+    .section-label::after { content: ""; height: 1px; background: var(--line); flex: 1; }
+    .tool-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; padding-bottom: 70px; }
+    .tool-card {
+      appearance: none; text-align: left; color: inherit; border: 1px solid var(--line); background: var(--surface); padding: 24px;
+      border-radius: var(--radius-md); min-height: 165px; box-shadow: 0 1px 0 rgba(0,0,0,.03); transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease;
+      display: grid; grid-template-columns: 48px 1fr auto; grid-template-rows: auto 1fr; column-gap: 16px; align-items: start;
+    }
+    .tool-card:hover { transform: translateY(-3px); box-shadow: var(--shadow); border-color: var(--accent); }
+    .tool-icon { grid-row: 1 / span 2; width: 48px; height: 48px; border-radius: 14px; display: grid; place-items: center; background: var(--accent-soft); color: var(--accent-strong); }
+    .tool-icon svg { width: 25px; height: 25px; stroke: currentColor; fill: none; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+    .tool-card:nth-child(3n+2) .tool-icon { background: var(--warm-soft); color: var(--warm); }
+    .tool-card h2 { font-size: 20px; letter-spacing: -.02em; padding-top: 2px; }
+    .tool-card p { grid-column: 2 / span 2; margin: 9px 0 0; color: var(--muted); font-size: 14px; }
+    .arrow { color: var(--muted); font-size: 23px; line-height: 1; transition: transform .18s ease; }
+    .tool-card:hover .arrow { transform: translateX(4px); color: var(--accent); }
+    .tool-page { display: none; min-height: 100vh; padding: 22px 0 70px; }
+    .tool-page.active { display: block; }
+    .page-top { display: flex; justify-content: space-between; gap: 18px; align-items: center; margin-bottom: 36px; }
+    .back {
+      border: 0; background: transparent; color: var(--accent-strong); font-weight: 750; padding: 10px 0; display: inline-flex; align-items: center; gap: 8px;
+    }
+    .back:hover { text-decoration: underline; }
+    .page-count { color: var(--muted); font-size: 13px; font-weight: 700; }
+    .tool-intro { margin-bottom: 28px; }
+    .tool-intro h1 { font-size: clamp(38px, 6vw, 64px); }
+    .tool-intro p { color: var(--muted); margin: 13px 0 0; max-width: 650px; font-size: 17px; }
+    .workbench { display: grid; grid-template-columns: minmax(0, .9fr) minmax(0, 1.1fr); gap: 22px; align-items: start; }
+    .panel { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius-lg); padding: clamp(20px, 4vw, 32px); box-shadow: var(--shadow); }
+    .panel h2 { font-size: 20px; margin-bottom: 22px; }
+    .fields { display: grid; gap: 17px; }
+    .field-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
+    label { display: grid; gap: 7px; font-size: 13px; font-weight: 750; color: var(--muted); }
+    input, select, textarea {
+      width: 100%; border: 1px solid var(--line); color: var(--text); background: var(--bg); border-radius: var(--radius-sm); padding: 13px 14px; outline: none;
+    }
+    textarea { min-height: 210px; resize: vertical; line-height: 1.6; }
+    input:focus, select:focus, textarea:focus { border-color: var(--accent); box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 17%, transparent); }
+    input[type="range"] { padding: 0; accent-color: var(--accent); box-shadow: none; }
+    .primary, .secondary, .small-action {
+      border: 0; border-radius: var(--radius-sm); min-height: 46px; padding: 11px 17px; font-weight: 800; transition: background .16s ease, transform .16s ease;
+    }
+    .primary { color: #fff; background: var(--accent); }
+    .primary:hover { background: var(--accent-strong); }
+    .primary:active, .secondary:active, .small-action:active { transform: translateY(1px); }
+    .secondary { color: var(--accent-strong); background: var(--accent-soft); }
+    .secondary:hover { filter: brightness(.97); }
+    .actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 4px; }
+    .result { min-height: 240px; display: flex; flex-direction: column; justify-content: center; background: var(--accent-soft); border-color: color-mix(in srgb, var(--accent) 42%, var(--line)); }
+    .result-title { color: var(--muted); font-size: 13px; font-weight: 800; margin-bottom: 10px; }
+    .big-result { font-family: Georgia, "Times New Roman", serif; font-size: clamp(38px, 6vw, 65px); line-height: 1.05; letter-spacing: -.04em; color: var(--accent-strong); overflow-wrap: anywhere; }
+    .result-note { margin: 13px 0 0; color: var(--muted); }
+    .metric-grid { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: 10px; margin-top: 24px; }
+    .metric { background: color-mix(in srgb, var(--surface) 72%, transparent); border: 1px solid color-mix(in srgb, var(--line) 70%, transparent); padding: 14px; border-radius: 12px; }
+    .metric span { display: block; color: var(--muted); font-size: 12px; font-weight: 750; }
+    .metric strong { display: block; margin-top: 3px; font-size: 20px; overflow-wrap: anywhere; }
+    .placeholder { color: var(--muted); font-size: 15px; max-width: 420px; }
+    .error { margin: 10px 0 0; color: var(--danger); font-size: 13px; font-weight: 700; min-height: 20px; }
+    .tabs { display: flex; flex-wrap: wrap; gap: 8px; padding: 5px; background: var(--surface-2); border-radius: 12px; }
+    .tab { flex: 1; border: 0; padding: 9px 12px; border-radius: 8px; background: transparent; color: var(--muted); font-weight: 750; white-space: nowrap; }
+    .tab.active { background: var(--surface); color: var(--text); box-shadow: 0 1px 5px rgba(0,0,0,.08); }
+    .switch-fields > div { display: none; }
+    .switch-fields > div.active { display: grid; gap: 17px; }
+    .options { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+    .check { display: flex; align-items: center; gap: 10px; padding: 11px 12px; background: var(--bg); border: 1px solid var(--line); border-radius: 9px; color: var(--text); font-size: 14px; }
+    .check input { width: 18px; height: 18px; padding: 0; accent-color: var(--accent); }
+    .password-box { background: var(--surface); border: 1px dashed var(--accent); border-radius: 12px; padding: 16px; font-family: ui-monospace, SFMono-Regular, Consolas, monospace; font-size: 21px; word-break: break-all; min-height: 64px; }
+    .copy-note { min-height: 20px; color: var(--accent-strong); font-size: 13px; font-weight: 750; margin-top: 7px; }
+    .converted-text { white-space: pre-wrap; word-break: break-word; min-height: 140px; max-height: 340px; overflow: auto; background: var(--surface); border: 1px solid var(--line); padding: 15px; border-radius: 12px; }
+    .range-head { display: flex; justify-content: space-between; align-items: center; }
+    .range-value { color: var(--text); font-size: 14px; }
+    .number-list { font-family: ui-monospace, SFMono-Regular, Consolas, monospace; font-size: clamp(25px, 4vw, 40px); color: var(--accent-strong); word-break: break-word; }
+    .info { margin-top: 22px; border-top: 1px solid var(--line); padding-top: 18px; color: var(--muted); font-size: 13px; }
+    .sr-only { position: absolute; width: 1px; height: 1px; margin: -1px; clip: rect(0,0,0,0); overflow: hidden; }
+    @media (max-width: 760px) {
+      .wrap { width: min(100% - 24px, 660px); }
+      .hero { padding: 48px 0 30px; }
+      .tool-grid, .workbench { grid-template-columns: 1fr; }
+      .tool-grid { gap: 12px; }
+      .tool-card { min-height: 142px; padding: 20px; }
+      .tool-page { padding-top: 10px; }
+      .page-top { margin-bottom: 22px; }
+      .result { min-height: 210px; }
+    }
+    @media (max-width: 470px) {
+      .field-grid, .metric-grid, .options { grid-template-columns: 1fr; }
+      .tool-card { grid-template-columns: 43px 1fr auto; column-gap: 12px; }
+      .tool-icon { width: 43px; height: 43px; border-radius: 11px; }
+      .panel { border-radius: 16px; }
+      .tabs { display: grid; grid-template-columns: 1fr; }
+      .actions > * { flex: 1 1 120px; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      *, *::before, *::after { transition: none !important; }
+    }
+  </style>
+</head>
+<body>
+  <main id="home" class="home-view">
+    <div class="wrap">
+      <section class="hero">
+        <div class="hero-mark"></div>
+        <h1>Calculate. Convert. Count.</h1>
+        <p>Ten practical tools for everyday questions—from loan payments and exact ages to text cleanup and secure passwords.</p>
+      </section>
+      <div class="section-label"><span>Choose a tool</span><span>10 available</span></div>
+      <section class="tool-grid" id="toolGrid" aria-label="Available tools"></section>
+    </div>
+  </main>
+
+  <section class="tool-page" id="age" data-title="Age Calculator">
+    <div class="wrap">
+      <div class="page-top"><button class="back" data-home>← All tools</button><span class="page-count">01 / 10</span></div>
+      <header class="tool-intro"><h1>Age Calculator</h1><p>Find your exact calendar age and the total number of days since your date of birth.</p></header>
+      <div class="workbench">
+        <div class="panel"><h2>Enter dates</h2><div class="fields">
+          <label>Date of birth<input type="date" id="birthDate"></label>
+          <label>Calculate age on<input type="date" id="ageOnDate"></label>
+          <button class="primary" id="calcAge">Calculate age</button><p class="error" id="ageError" role="alert"></p>
+        </div></div>
+        <div class="panel result" id="ageResult" aria-live="polite"><p class="placeholder">Your exact age will appear here.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="tool-page" id="emi" data-title="EMI Calculator">
+    <div class="wrap">
+      <div class="page-top"><button class="back" data-home>← All tools</button><span class="page-count">02 / 10</span></div>
+      <header class="tool-intro"><h1>EMI Calculator</h1><p>Estimate a fixed monthly loan payment, total interest and total repayment.</p></header>
+      <div class="workbench">
+        <div class="panel"><h2>Loan details</h2><div class="fields">
+          <div class="field-grid">
+            <label>Currency<select id="emiCurrency"><option value="$">USD ($)</option><option value="£">GBP (£)</option></select></label>
+            <label>Loan amount<input type="number" id="loanAmount" min="0" step="100" placeholder="25000"></label>
+          </div>
+          <label>Annual interest rate (%)<input type="number" id="interestRate" min="0" step="0.01" placeholder="6.5"></label>
+          <div class="field-grid">
+            <label>Tenure<input type="number" id="loanTenure" min="1" step="1" placeholder="5"></label>
+            <label>Tenure unit<select id="tenureUnit"><option value="years">Years</option><option value="months">Months</option></select></label>
+          </div>
+          <button class="primary" id="calcEmi">Calculate payment</button><p class="error" id="emiError" role="alert"></p>
+        </div></div>
+        <div class="panel result" id="emiResult" aria-live="polite"><p class="placeholder">Enter your loan details to see the repayment estimate.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="tool-page" id="bmi" data-title="BMI Calculator">
+    <div class="wrap">
+      <div class="page-top"><button class="back" data-home>← All tools</button><span class="page-count">03 / 10</span></div>
+      <header class="tool-intro"><h1>BMI Calculator</h1><p>Calculate body mass index using metric or imperial measurements.</p></header>
+      <div class="workbench">
+        <div class="panel"><h2>Your measurements</h2><div class="fields">
+          <div class="tabs" data-tabs="bmi"><button class="tab active" data-mode="metric">Metric</button><button class="tab" data-mode="imperial">Imperial</button></div>
+          <div class="switch-fields" id="bmiFields">
+            <div class="active" data-mode="metric"><label>Weight (kg)<input type="number" id="weightKg" min="1" step="0.1" placeholder="70"></label><label>Height (cm)<input type="number" id="heightCm" min="1" step="0.1" placeholder="175"></label></div>
+            <div data-mode="imperial"><label>Weight (lb)<input type="number" id="weightLb" min="1" step="0.1" placeholder="154"></label><div class="field-grid"><label>Height (ft)<input type="number" id="heightFt" min="1" step="1" placeholder="5"></label><label>Inches<input type="number" id="heightIn" min="0" max="11.99" step="0.1" placeholder="9"></label></div></div>
+          </div>
+          <button class="primary" id="calcBmi">Calculate BMI</button><p class="error" id="bmiError" role="alert"></p>
+        </div></div>
+        <div class="panel result" id="bmiResult" aria-live="polite"><p class="placeholder">Your BMI and standard category will appear here.</p></div>
+      </div>
+      <p class="info">BMI is a screening measure, not a medical diagnosis. It does not account for factors such as muscle mass or pregnancy.</p>
+    </div>
+  </section>
+
+  <section class="tool-page" id="percentage" data-title="Percentage Calculator">
+    <div class="wrap">
+      <div class="page-top"><button class="back" data-home>← All tools</button><span class="page-count">04 / 10</span></div>
+      <header class="tool-intro"><h1>Percentage Calculator</h1><p>Solve common percentage questions and calculate percentage change.</p></header>
+      <div class="workbench">
+        <div class="panel"><h2>Choose a calculation</h2><div class="fields">
+          <label>Question<select id="percentMode"><option value="of">What is X% of Y?</option><option value="part">X is what percent of Y?</option><option value="change">Percentage change from X to Y</option></select></label>
+          <div class="field-grid"><label id="percentALabel">Percentage (X)<input type="number" id="percentA" step="any" placeholder="20"></label><label id="percentBLabel">Number (Y)<input type="number" id="percentB" step="any" placeholder="150"></label></div>
+          <button class="primary" id="calcPercent">Calculate percentage</button><p class="error" id="percentError" role="alert"></p>
+        </div></div>
+        <div class="panel result" id="percentResult" aria-live="polite"><p class="placeholder">Choose a question and enter both values.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="tool-page" id="word-counter" data-title="Word Counter">
+    <div class="wrap">
+      <div class="page-top"><button class="back" data-home>← All tools</button><span class="page-count">05 / 10</span></div>
+      <header class="tool-intro"><h1>Word Counter</h1><p>Measure words, characters, sentences and estimated reading time.</p></header>
+      <div class="workbench">
+        <div class="panel"><h2>Your text</h2><div class="fields"><label><span class="sr-only">Text to analyse</span><textarea id="wordText" placeholder="Paste or type your text here…"></textarea></label><button class="primary" id="countWords">Analyse text</button></div></div>
+        <div class="panel result" id="wordResult" aria-live="polite"><p class="placeholder">Your text statistics will appear here.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="tool-page" id="case-converter" data-title="Case Converter">
+    <div class="wrap">
+      <div class="page-top"><button class="back" data-home>← All tools</button><span class="page-count">06 / 10</span></div>
+      <header class="tool-intro"><h1>Case Converter</h1><p>Switch text to uppercase, lowercase or title case in one click.</p></header>
+      <div class="workbench">
+        <div class="panel"><h2>Original text</h2><div class="fields"><label><span class="sr-only">Text to convert</span><textarea id="caseText" placeholder="Enter text to convert…"></textarea></label><div class="actions"><button class="primary" data-case="upper">UPPERCASE</button><button class="secondary" data-case="lower">lowercase</button><button class="secondary" data-case="title">Title Case</button></div><p class="error" id="caseError" role="alert"></p></div></div>
+        <div class="panel"><div class="result-title">CONVERTED TEXT</div><div class="converted-text" id="caseResult" aria-live="polite">Converted text will appear here.</div><div class="actions"><button class="small-action secondary" id="copyCase">Copy text</button></div><div class="copy-note" id="caseCopyNote" aria-live="polite"></div></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="tool-page" id="password" data-title="Password Generator">
+    <div class="wrap">
+      <div class="page-top"><button class="back" data-home>← All tools</button><span class="page-count">07 / 10</span></div>
+      <header class="tool-intro"><h1>Password Generator</h1><p>Create a random password with your preferred length and character types.</p></header>
+      <div class="workbench">
+        <div class="panel"><h2>Password options</h2><div class="fields">
+          <label><span class="range-head"><span>Length</span><strong class="range-value" id="passwordLengthValue">16</strong></span><input type="range" id="passwordLength" min="6" max="64" value="16"></label>
+          <div class="options"><label class="check"><input type="checkbox" id="optUpper" checked> Uppercase</label><label class="check"><input type="checkbox" id="optLower" checked> Lowercase</label><label class="check"><input type="checkbox" id="optNumbers" checked> Numbers</label><label class="check"><input type="checkbox" id="optSymbols" checked> Symbols</label></div>
+          <button class="primary" id="generatePassword">Generate password</button><p class="error" id="passwordError" role="alert"></p>
+        </div></div>
+        <div class="panel"><div class="result-title">GENERATED PASSWORD</div><div class="password-box" id="passwordResult" aria-live="polite">Select your options and generate.</div><div class="actions"><button class="small-action secondary" id="copyPassword">Copy password</button></div><div class="copy-note" id="passwordCopyNote" aria-live="polite"></div></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="tool-page" id="unit-converter" data-title="Unit Converter">
+    <div class="wrap">
+      <div class="page-top"><button class="back" data-home>← All tools</button><span class="page-count">08 / 10</span></div>
+      <header class="tool-intro"><h1>Unit Converter</h1><p>Convert common length, weight and temperature measurements.</p></header>
+      <div class="workbench">
+        <div class="panel"><h2>Conversion</h2><div class="fields">
+          <label>Measurement type<select id="unitCategory"><option value="length">Length</option><option value="weight">Weight</option><option value="temperature">Temperature</option></select></label>
+          <label>Value<input type="number" id="unitValue" step="any" placeholder="1"></label>
+          <div class="field-grid"><label>From<select id="unitFrom"></select></label><label>To<select id="unitTo"></select></label></div>
+          <button class="primary" id="convertUnit">Convert units</button><p class="error" id="unitError" role="alert"></p>
+        </div></div>
+        <div class="panel result" id="unitResult" aria-live="polite"><p class="placeholder">Enter a value and select your units.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="tool-page" id="days-between" data-title="Days Between Dates">
+    <div class="wrap">
+      <div class="page-top"><button class="back" data-home>← All tools</button><span class="page-count">09 / 10</span></div>
+      <header class="tool-intro"><h1>Days Between Dates</h1><p>Count elapsed days and express the span in weeks and remaining days.</p></header>
+      <div class="workbench">
+        <div class="panel"><h2>Select dates</h2><div class="fields">
+          <label>Start date<input type="date" id="startDate"></label><label>End date<input type="date" id="endDate"></label>
+          <label>Counting method<select id="dateCountMode"><option value="elapsed">Elapsed days (exclude start date)</option><option value="inclusive">Calendar days (include both dates)</option></select></label>
+          <button class="primary" id="calcDays">Count days</button><p class="error" id="daysError" role="alert"></p>
+        </div></div>
+        <div class="panel result" id="daysResult" aria-live="polite"><p class="placeholder">Choose a start and end date to count the interval.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="tool-page" id="random-number" data-title="Random Number Generator">
+    <div class="wrap">
+      <div class="page-top"><button class="back" data-home>← All tools</button><span class="page-count">10 / 10</span></div>
+      <header class="tool-intro"><h1>Random Number Generator</h1><p>Generate one or more whole numbers within a range.</p></header>
+      <div class="workbench">
+        <div class="panel"><h2>Set a range</h2><div class="fields">
+          <div class="field-grid"><label>Minimum<input type="number" id="randomMin" step="1" value="1"></label><label>Maximum<input type="number" id="randomMax" step="1" value="100"></label></div>
+          <label>How many numbers? <input type="number" id="randomCount" min="1" max="50" step="1" value="1"></label>
+          <label>Duplicates<select id="randomDuplicates"><option value="allow">Allow duplicates</option><option value="unique">No duplicates</option></select></label>
+          <button class="primary" id="generateRandom">Generate numbers</button><p class="error" id="randomError" role="alert"></p>
+        </div></div>
+        <div class="panel result" id="randomResult" aria-live="polite"><p class="placeholder">Your random number will appear here.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <script>
+    (function () {
+      'use strict';
+      var icons = {
+        age: '<svg viewBox="0 0 24 24"><path d="M8 2v3M16 2v3M3.5 9h17M5 4h14a2 2 0 0 1 2 2v14H3V6a2 2 0 0 1 2-2Z"/><path d="M8 13h3v3H8z"/></svg>',
+        emi: '<svg viewBox="0 0 24 24"><path d="M4 4h16v16H4zM8 8h8M8 12h2M14 12h2M8 16h2M14 16h2"/></svg>',
+        bmi: '<svg viewBox="0 0 24 24"><path d="M5 20h14l1-13H4l1 13Z"/><path d="M9 10a3 3 0 0 1 6 0M12 10l2-1"/></svg>',
+        percentage: '<svg viewBox="0 0 24 24"><circle cx="7" cy="7" r="2.5"/><circle cx="17" cy="17" r="2.5"/><path d="m6 19 12-14"/></svg>',
+        'word-counter': '<svg viewBox="0 0 24 24"><path d="M4 5h16M4 9h12M4 13h16M4 17h10"/></svg>',
+        'case-converter': '<svg viewBox="0 0 24 24"><path d="m3 18 5-12 5 12M5 14h6M15 10h6M18 7v10"/></svg>',
+        password: '<svg viewBox="0 0 24 24"><path d="M7 11V8a5 5 0 0 1 10 0v3M5 11h14v10H5z"/><path d="M12 15v2"/></svg>',
+        'unit-converter': '<svg viewBox="0 0 24 24"><path d="M4 8h14M14 4l4 4-4 4M20 16H6M10 12l-4 4 4 4"/></svg>',
+        'days-between': '<svg viewBox="0 0 24 24"><path d="M5 4h14a2 2 0 0 1 2 2v14H3V6a2 2 0 0 1 2-2ZM8 2v4M16 2v4M3 9h18"/><path d="m8 14 2 2 5-5"/></svg>',
+        'random-number': '<svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="8" cy="8" r="1" fill="currentColor"/><circle cx="16" cy="8" r="1" fill="currentColor"/><circle cx="8" cy="16" r="1" fill="currentColor"/><circle cx="16" cy="16" r="1" fill="currentColor"/><circle cx="12" cy="12" r="1" fill="currentColor"/></svg>'
+      };
+      var tools = [
+        ['age','Age Calculator','Exact age in years, months and days'],
+        ['emi','EMI Calculator','Monthly loan payment and total cost'],
+        ['bmi','BMI Calculator','Body mass index in metric or imperial'],
+        ['percentage','Percentage Calculator','Three everyday percentage formulas'],
+        ['word-counter','Word Counter','Words, characters, sentences and reading time'],
+        ['case-converter','Case Converter','Uppercase, lowercase and title case'],
+        ['password','Password Generator','Custom random passwords up to 64 characters'],
+        ['unit-converter','Unit Converter','Length, weight and temperature'],
+        ['days-between','Days Between Dates','Elapsed or inclusive calendar days'],
+        ['random-number','Random Number Generator','Whole numbers from any range']
+      ];
+      var grid = document.getElementById('toolGrid');
+      tools.forEach(function (tool, i) {
+        var b = document.createElement('button');
+        b.className = 'tool-card'; b.dataset.tool = tool[0];
+        b.innerHTML = '<span class="tool-icon">' + icons[tool[0]] + '</span><h2>' + tool[1] + '</h2><span class="arrow" aria-hidden="true">→</span><p>' + tool[2] + '</p>';
+        b.setAttribute('aria-label', 'Open ' + tool[1]); grid.appendChild(b);
+      });
+      function showTool(id, push) {
+        document.querySelectorAll('.tool-page').forEach(function (p) { p.classList.remove('active'); });
+        document.getElementById('home').style.display = id ? 'none' : 'block';
+        if (id && document.getElementById(id)) {
+          var page = document.getElementById(id); page.classList.add('active');
+          document.title = page.dataset.title + ' — Free Online Tools';
+          if (push) history.pushState({tool:id}, '', '#' + id);
+        } else {
+          document.title = 'Free Online Tools';
+          if (push) history.pushState({}, '', location.pathname + location.search);
+        }
+        window.scrollTo(0, 0);
+      }
+      grid.addEventListener('click', function (e) { var b = e.target.closest('[data-tool]'); if (b) showTool(b.dataset.tool, true); });
+      document.querySelectorAll('[data-home]').forEach(function (b) { b.addEventListener('click', function () { showTool(null, true); }); });
+      window.addEventListener('popstate', function () { showTool(location.hash.slice(1), false); });
+      if (location.hash) showTool(location.hash.slice(1), false);
+
+      function value(id) { return document.getElementById(id).value; }
+      function num(id) { return Number(value(id)); }
+      function setError(id, msg) { document.getElementById(id).textContent = msg || ''; }
+      function parseDate(v) { var p = v.split('-').map(Number); return v && p.length === 3 ? new Date(p[0], p[1]-1, p[2]) : null; }
+      function utcDay(d) { return Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()); }
+      function dateInputToday() { var d = new Date(); return d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0'); }
+      document.getElementById('ageOnDate').value = dateInputToday();
+
+      document.getElementById('calcAge').addEventListener('click', function () {
+        var birth = parseDate(value('birthDate')), end = parseDate(value('ageOnDate'));
+        if (!birth || !end) return setError('ageError', 'Please select both dates.');
+        if (birth > end) return setError('ageError', 'Date of birth must be before the calculation date.');
+        setError('ageError', '');
+        var years = end.getFullYear() - birth.getFullYear();
+        var anchor = new Date(birth.getFullYear() + years, birth.getMonth(), birth.getDate());
+        if (anchor.getMonth() !== birth.getMonth()) anchor = new Date(birth.getFullYear() + years, birth.getMonth() + 1, 0);
+        if (anchor > end) { years--; anchor = new Date(birth.getFullYear() + years, birth.getMonth(), birth.getDate()); if (anchor.getMonth() !== birth.getMonth()) anchor = new Date(birth.getFullYear() + years, birth.getMonth() + 1, 0); }
+        var months = 0, next = new Date(anchor);
+        while (months < 11) { var candidate = new Date(anchor.getFullYear(), anchor.getMonth() + months + 1, anchor.getDate()); if (candidate.getDate() !== anchor.getDate()) candidate = new Date(anchor.getFullYear(), anchor.getMonth() + months + 2, 0); if (candidate <= end) { months++; next = candidate; } else break; }
+        var monthAnchor = months ? next : anchor;
+        var days = Math.round((utcDay(end) - utcDay(monthAnchor)) / 86400000);
+        var total = Math.round((utcDay(end) - utcDay(birth)) / 86400000);
+        document.getElementById('ageResult').innerHTML = '<div class="result-title">EXACT AGE</div><div class="big-result">' + years + 'y ' + months + 'm ' + days + 'd</div><div class="metric-grid"><div class="metric"><span>Total days</span><strong>' + total.toLocaleString() + '</strong></div><div class="metric"><span>Total weeks</span><strong>' + Math.floor(total/7).toLocaleString() + '</strong></div></div>';
+      });
+
+      document.getElementById('calcEmi').addEventListener('click', function () {
+        var principal = num('loanAmount'), annual = num('interestRate'), tenure = num('loanTenure'), months = value('tenureUnit') === 'years' ? tenure * 12 : tenure;
+        if (!(principal > 0) || annual < 0 || !(months > 0)) return setError('emiError', 'Enter a positive amount and tenure, and a valid interest rate.');
+        setError('emiError', '');
+        var r = annual / 1200, payment = r === 0 ? principal / months : principal * r * Math.pow(1+r, months) / (Math.pow(1+r, months)-1);
+        var total = payment * months, interest = total - principal, symbol = value('emiCurrency');
+        var money = function (n) { return symbol + n.toLocaleString(undefined, {minimumFractionDigits:2, maximumFractionDigits:2}); };
+        document.getElementById('emiResult').innerHTML = '<div class="result-title">ESTIMATED MONTHLY PAYMENT</div><div class="big-result">' + money(payment) + '</div><div class="metric-grid"><div class="metric"><span>Total interest</span><strong>' + money(interest) + '</strong></div><div class="metric"><span>Total payment</span><strong>' + money(total) + '</strong></div><div class="metric"><span>Number of payments</span><strong>' + months + '</strong></div><div class="metric"><span>Monthly rate</span><strong>' + (r*100).toFixed(3) + '%</strong></div></div>';
+      });
+
+      var bmiMode = 'metric';
+      document.querySelector('[data-tabs="bmi"]').addEventListener('click', function (e) {
+        var t = e.target.closest('.tab'); if (!t) return; bmiMode = t.dataset.mode;
+        this.querySelectorAll('.tab').forEach(function (x) { x.classList.toggle('active', x === t); });
+        document.querySelectorAll('#bmiFields > div').forEach(function (x) { x.classList.toggle('active', x.dataset.mode === bmiMode); });
+      });
+      document.getElementById('calcBmi').addEventListener('click', function () {
+        var bmi;
+        if (bmiMode === 'metric') { var kg=num('weightKg'), cm=num('heightCm'); if (!(kg>0) || !(cm>0)) return setError('bmiError','Enter a positive weight and height.'); bmi=kg/Math.pow(cm/100,2); }
+        else { var lb=num('weightLb'), inches=num('heightFt')*12+num('heightIn'); if (!(lb>0) || !(inches>0)) return setError('bmiError','Enter a positive weight and height.'); bmi=703*lb/Math.pow(inches,2); }
+        setError('bmiError',''); var category = bmi < 18.5 ? 'Underweight' : bmi < 25 ? 'Healthy range' : bmi < 30 ? 'Overweight' : 'Obesity range';
+        document.getElementById('bmiResult').innerHTML = '<div class="result-title">YOUR BMI</div><div class="big-result">' + bmi.toFixed(1) + '</div><p class="result-note">Standard adult category: <strong>' + category + '</strong></p><div class="metric-grid"><div class="metric"><span>Healthy BMI range</span><strong>18.5–24.9</strong></div><div class="metric"><span>Measurement system</span><strong>' + (bmiMode==='metric'?'Metric':'Imperial') + '</strong></div></div>';
+      });
+
+      document.getElementById('percentMode').addEventListener('change', function () {
+        var m=this.value, a=document.getElementById('percentALabel'), b=document.getElementById('percentBLabel');
+        if(m==='of'){a.childNodes[0].nodeValue='Percentage (X)';b.childNodes[0].nodeValue='Number (Y)';}
+        if(m==='part'){a.childNodes[0].nodeValue='Part (X)';b.childNodes[0].nodeValue='Whole (Y)';}
+        if(m==='change'){a.childNodes[0].nodeValue='Starting value (X)';b.childNodes[0].nodeValue='New value (Y)';}
+      });
+      document.getElementById('calcPercent').addEventListener('click', function () {
+        var a=num('percentA'), b=num('percentB'), mode=value('percentMode'), result, note;
+        if (!Number.isFinite(a)||!Number.isFinite(b)) return setError('percentError','Enter both values.');
+        if ((mode==='part'||mode==='change') && b===0 && mode==='part' || mode==='change' && a===0) return setError('percentError','The comparison value cannot be zero.');
+        if(mode==='of'){result=a/100*b;note=a+'% of '+b;}
+        if(mode==='part'){result=a/b*100;note=a+' is this percentage of '+b;}
+        if(mode==='change'){result=(b-a)/Math.abs(a)*100;note=(result>=0?'Increase':'Decrease')+' from '+a+' to '+b;}
+        setError('percentError','');
+        document.getElementById('percentResult').innerHTML='<div class="result-title">RESULT</div><div class="big-result">'+Number(result.toFixed(8)).toLocaleString()+(mode==='of'?'':'%')+'</div><p class="result-note">'+note+'</p>';
+      });
+
+      function analyseWords() {
+        var text=value('wordText'), trimmed=text.trim(), words=trimmed?trimmed.split(/\s+/u).length:0;
+        var chars=text.length, noSpaces=text.replace(/\s/g,'').length;
+        var sentences=trimmed?(trimmed.match(/[^.!?]+[.!?]+(?:\s|$)|[^.!?]+$/g)||[]).length:0;
+        var seconds=Math.ceil(words/200*60), reading=words===0?'0 min':seconds<60?'< 1 min':Math.ceil(seconds/60)+' min';
+        document.getElementById('wordResult').innerHTML='<div class="result-title">TEXT STATISTICS</div><div class="big-result">'+words+' words</div><div class="metric-grid"><div class="metric"><span>Characters</span><strong>'+chars.toLocaleString()+'</strong></div><div class="metric"><span>Without spaces</span><strong>'+noSpaces.toLocaleString()+'</strong></div><div class="metric"><span>Sentences</span><strong>'+sentences.toLocaleString()+'</strong></div><div class="metric"><span>Reading time</span><strong>'+reading+'</strong></div></div>';
+      }
+      document.getElementById('countWords').addEventListener('click', analyseWords);
+      document.getElementById('wordText').addEventListener('input', analyseWords);
+
+      function toTitle(s) { var small={'a':1,'an':1,'and':1,'as':1,'at':1,'but':1,'by':1,'for':1,'in':1,'nor':1,'of':1,'on':1,'or':1,'per':1,'the':1,'to':1,'vs':1,'via':1}; return s.toLowerCase().replace(/\b([a-z][\w'’-]*)\b/g,function(w,_,offset,full){return (offset!==0 && offset+w.length!==full.length && small[w])?w:w.charAt(0).toUpperCase()+w.slice(1);}); }
+      document.querySelectorAll('[data-case]').forEach(function (b) { b.addEventListener('click', function () { var text=value('caseText'); if(!text.trim()) return setError('caseError','Enter some text to convert.'); setError('caseError',''); var out=this.dataset.case==='upper'?text.toUpperCase():this.dataset.case==='lower'?text.toLowerCase():toTitle(text); document.getElementById('caseResult').textContent=out; document.getElementById('caseCopyNote').textContent=''; }); });
+      function copyText(text, noteId) { if(!text || text.indexOf('will appear')>-1 || text.indexOf('Select your')>-1) return; if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(text).then(function(){document.getElementById(noteId).textContent='Copied to clipboard.';},function(){document.getElementById(noteId).textContent='Select the text and copy it manually.';});} else {document.getElementById(noteId).textContent='Select the text and copy it manually.';} }
+      document.getElementById('copyCase').addEventListener('click', function(){copyText(document.getElementById('caseResult').textContent,'caseCopyNote');});
+
+      var lengthSlider=document.getElementById('passwordLength');
+      lengthSlider.addEventListener('input',function(){document.getElementById('passwordLengthValue').textContent=this.value;});
+      function secureIndex(max) { if(window.crypto&&crypto.getRandomValues){var arr=new Uint32Array(1), limit=Math.floor(4294967296/max)*max; do{crypto.getRandomValues(arr);}while(arr[0]>=limit); return arr[0]%max;} return Math.floor(Math.random()*max); }
+      document.getElementById('generatePassword').addEventListener('click',function(){
+        var sets=[]; if(document.getElementById('optUpper').checked)sets.push('ABCDEFGHJKLMNPQRSTUVWXYZ'); if(document.getElementById('optLower').checked)sets.push('abcdefghijkmnopqrstuvwxyz'); if(document.getElementById('optNumbers').checked)sets.push('23456789'); if(document.getElementById('optSymbols').checked)sets.push('!@#$%^&*()-_=+');
+        if(!sets.length)return setError('passwordError','Select at least one character type.'); setError('passwordError',''); var len=Number(lengthSlider.value), chars=[]; sets.forEach(function(s){chars.push(s[secureIndex(s.length)]);}); var all=sets.join(''); while(chars.length<len)chars.push(all[secureIndex(all.length)]); for(var i=chars.length-1;i>0;i--){var j=secureIndex(i+1),tmp=chars[i];chars[i]=chars[j];chars[j]=tmp;} document.getElementById('passwordResult').textContent=chars.join('');document.getElementById('passwordCopyNote').textContent='';
+      });
+      document.getElementById('copyPassword').addEventListener('click',function(){copyText(document.getElementById('passwordResult').textContent,'passwordCopyNote');});
+
+      var unitData={
+        length:{units:[['metre','Metres (m)'],['kilometre','Kilometres (km)'],['centimetre','Centimetres (cm)'],['mile','Miles (mi)'],['yard','Yards (yd)'],['foot','Feet (ft)'],['inch','Inches (in)']],factor:{metre:1,kilometre:1000,centimetre:.01,mile:1609.344,yard:.9144,foot:.3048,inch:.0254}},
+        weight:{units:[['kilogram','Kilograms (kg)'],['gram','Grams (g)'],['pound','Pounds (lb)'],['ounce','Ounces (oz)'],['stone','Stone (st)']],factor:{kilogram:1,gram:.001,pound:.45359237,ounce:.028349523125,stone:6.35029318}},
+        temperature:{units:[['celsius','Celsius (°C)'],['fahrenheit','Fahrenheit (°F)'],['kelvin','Kelvin (K)']]}
+      };
+      function populateUnits(){var cat=value('unitCategory'), data=unitData[cat], from=document.getElementById('unitFrom'),to=document.getElementById('unitTo');from.innerHTML='';to.innerHTML='';data.units.forEach(function(u){from.add(new Option(u[1],u[0]));to.add(new Option(u[1],u[0]));});to.selectedIndex=1;}
+      populateUnits(); document.getElementById('unitCategory').addEventListener('change',populateUnits);
+      document.getElementById('convertUnit').addEventListener('click',function(){var v=num('unitValue'),cat=value('unitCategory'),from=value('unitFrom'),to=value('unitTo'),out;if(!Number.isFinite(v))return setError('unitError','Enter a value to convert.');if(cat==='temperature'){var c=from==='celsius'?v:from==='fahrenheit'?(v-32)*5/9:v-273.15;out=to==='celsius'?c:to==='fahrenheit'?c*9/5+32:c+273.15;}else{out=v*unitData[cat].factor[from]/unitData[cat].factor[to];}setError('unitError','');var fromText=document.getElementById('unitFrom').selectedOptions[0].text,toText=document.getElementById('unitTo').selectedOptions[0].text;document.getElementById('unitResult').innerHTML='<div class="result-title">CONVERTED VALUE</div><div class="big-result">'+Number(out.toPrecision(10)).toLocaleString(undefined,{maximumFractionDigits:10})+'</div><p class="result-note">'+v.toLocaleString()+' '+fromText+' = '+Number(out.toPrecision(10)).toLocaleString(undefined,{maximumFractionDigits:10})+' '+toText+'</p>';});
+
+      document.getElementById('calcDays').addEventListener('click',function(){var a=parseDate(value('startDate')),b=parseDate(value('endDate'));if(!a||!b)return setError('daysError','Please select both dates.');var direction=b>=a?'after':'before',elapsed=Math.abs(Math.round((utcDay(b)-utcDay(a))/86400000)),days=elapsed+(value('dateCountMode')==='inclusive'?1:0),weeks=Math.floor(days/7),rem=days%7;setError('daysError','');document.getElementById('daysResult').innerHTML='<div class="result-title">DAYS BETWEEN</div><div class="big-result">'+days.toLocaleString()+' days</div><div class="metric-grid"><div class="metric"><span>Weeks + days</span><strong>'+weeks+'w '+rem+'d</strong></div><div class="metric"><span>Date order</span><strong>End is '+direction+'</strong></div></div>';});
+
+      document.getElementById('generateRandom').addEventListener('click',function(){var min=num('randomMin'),max=num('randomMax'),count=num('randomCount'),unique=value('randomDuplicates')==='unique';if(!Number.isInteger(min)||!Number.isInteger(max)||!Number.isInteger(count)||count<1||count>50)return setError('randomError','Use whole numbers and choose a quantity from 1 to 50.');if(min>max)return setError('randomError','Minimum cannot be greater than maximum.');var range=max-min+1;if(unique&&count>range)return setError('randomError','The range is too small for that many unique numbers.');setError('randomError','');var out=[];while(out.length<count){var n=min+secureIndex(range);if(!unique||out.indexOf(n)===-1)out.push(n);}document.getElementById('randomResult').innerHTML='<div class="result-title">RANDOM '+(count===1?'NUMBER':'NUMBERS')+'</div><div class="number-list">'+out.join(', ')+'</div><p class="result-note">Range: '+min.toLocaleString()+' to '+max.toLocaleString()+'</p>';});
+    })();
+  </script>
+</body>
+</html>
